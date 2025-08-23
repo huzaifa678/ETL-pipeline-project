@@ -1,3 +1,4 @@
 .env
-/ETL-env/
+/ETL/
 mlruns
+mlartifacts

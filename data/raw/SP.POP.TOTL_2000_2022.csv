@@ -1,0 +1,93 @@
+countryiso3code,date,value,unit,obs_status,decimal,indicator.id,indicator.value,country.id,country.value
+BRA,2022,210306415,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2021,209550294,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2020,208660842,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2019,207455459,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2018,206107261,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2017,204703445,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2016,203218114,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2015,201675532,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2014,200085127,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2013,198478299,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2012,196876111,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2011,195284734,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2010,193701929,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2009,192079951,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2008,190367302,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2007,188552320,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2006,186653106,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2005,184688101,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2004,182675143,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2003,180622688,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2002,178503484,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2001,176301203,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+BRA,2000,174018282,,,0,SP.POP.TOTL,"Population, total",BR,Brazil
+CHN,2022,1412175000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2021,1412360000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2020,1411100000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2019,1407745000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2018,1402760000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2017,1396215000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2016,1387790000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2015,1379860000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2014,1371860000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2013,1363240000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2012,1354190000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2011,1345035000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2010,1337705000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2009,1331260000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2008,1324655000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2007,1317885000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2006,1311020000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2005,1303720000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2004,1296075000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2003,1288400000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2002,1280400000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2001,1271850000,,,0,SP.POP.TOTL,"Population, total",CN,China
+CHN,2000,1262645000,,,0,SP.POP.TOTL,"Population, total",CN,China
+DEU,2022,83797985,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2021,83196078,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2020,83160871,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2019,83092962,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2018,82905782,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2017,82657002,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2016,82348669,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2015,81686611,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2014,80982500,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2013,80645605,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2012,80425823,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2011,80274983,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2010,81776930,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2009,81902307,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2008,82110097,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2007,82266372,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2006,82376451,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2005,82469422,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2004,82516260,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2003,82534176,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2002,82488495,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2001,82349925,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+DEU,2000,82211508,,,0,SP.POP.TOTL,"Population, total",DE,Germany
+USA,2022,334017321,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2021,332099760,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2020,331577720,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2019,330226227,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2018,328529577,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2017,326608609,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2016,324353340,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2015,321815121,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2014,319257560,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2013,316726282,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2012,314339099,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2011,311839461,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2010,309378227,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2009,306771529,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2008,304093966,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2007,301231207,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2006,298379912,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2005,295516599,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2004,292805298,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2003,290107933,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2002,287625193,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2001,284968955,,,0,SP.POP.TOTL,"Population, total",US,United States
+USA,2000,282162411,,,0,SP.POP.TOTL,"Population, total",US,United States

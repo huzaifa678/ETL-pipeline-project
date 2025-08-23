@@ -1,0 +1,5 @@
+[ 2025-08-23 15:21:57,366 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): api.worldbank.org:80
+[ 2025-08-23 15:21:58,606 ] 544 urllib3.connectionpool - DEBUG - http://api.worldbank.org:80 "GET /v2/country?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 200 None
+[ 2025-08-23 15:21:58,612 ] 38 root - INFO - converted the response to JSON
+[ 2025-08-23 15:21:58,624 ] 58 root - INFO - JSON normalized
+[ 2025-08-23 15:21:58,630 ] 71 root - INFO - Data has been saved in the CSV format
