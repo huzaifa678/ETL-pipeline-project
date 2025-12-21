@@ -1,0 +1,5 @@
+[ 2025-09-21 17:49:06,285 ] 24 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2025-09-21 17:49:06,288 ] 40 root - INFO - Prepared features and target
+[ 2025-09-21 17:49:06,291 ] 52 root - INFO - Model training complete
+[ 2025-09-21 17:49:06,292 ] 70 root - INFO - Model Evaluation -> RMSE: 20617114.62201004, R2: 0.9985462509038353
+[ 2025-09-21 17:49:06,293 ] 83 root - INFO - Model saved at /Users/salmanahmadgill/ETL/model/model.pkl

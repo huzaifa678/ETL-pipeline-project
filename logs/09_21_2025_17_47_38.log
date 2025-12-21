@@ -1,0 +1,4 @@
+[ 2025-09-21 17:47:38,211 ] 24 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2025-09-21 17:47:38,212 ] 40 root - INFO - Prepared features and target
+[ 2025-09-21 17:47:38,213 ] 52 root - INFO - Model training complete
+[ 2025-09-21 17:47:38,214 ] 15 root - ERROR - Error occurred in file [/Users/salmanahmadgill/ETL/src/component/model_trainer.py] at line [63]: got an unexpected keyword argument 'squared'
