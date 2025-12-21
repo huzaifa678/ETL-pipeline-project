@@ -10,7 +10,7 @@ import sys
 class DataIngestion():
     
     def __init__(self, indicator: str, countries: str , start_year: int = None, end_year: int = None):
-        self.base_url = "http://api.worldbank.org/v2/countries"
+        self.base_url = os.getenv("BASE_URL")
         self.indicator = indicator
         self.country = countries
         self.start_year = start_year

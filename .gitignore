@@ -1,4 +1,7 @@
-.env
 /ETL/
 mlruns
 mlartifacts
+data/raw
+data/processed
+data/raw.dvc
+data/processed.dvc
