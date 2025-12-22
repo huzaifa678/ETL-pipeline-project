@@ -1,3 +1,4 @@
+import os
 from setuptools import find_packages,setup
 from typing import List
 
@@ -17,11 +18,10 @@ def get_requirements(file_path:str)->List[str]:
     return requirements
 
 setup(
-name='ETL-pipeline',
-version='0.0.1',
-author='Huzaifa Gill',
-author_email='huzaifagill411@gmail.com',
+name=os.getenv("PROJECT_NAME"),
+version=os.getenv("VERSION"),
+author=os.getenv("AUTHOR"),
+author_email=os.getenv("AUTHOR_EMAIL"),
 packages=find_packages(),
 install_requires=get_requirements('requirements.txt')
-
 )

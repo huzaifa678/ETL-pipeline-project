@@ -3,6 +3,11 @@ import logging
 import pandas as pd
 from src.exception import CustomException
 import sys
+from src.monitoring.metrics import (
+    TRANSFORMATION_DURATION,
+    ROWS_AFTER_TRANSFORM
+)
+import time
 
 
 class DataTransformer:
@@ -31,6 +36,8 @@ class DataTransformer:
         - rename columns
         - type casting
         """
+        start = time.time()
+        
         try:
             keep_cols = ["country.value", "date", "value"]
             df = df[keep_cols]
@@ -48,6 +55,8 @@ class DataTransformer:
             df["indicator_value"] = pd.to_numeric(df["indicator_value"], errors="coerce")
 
             logging.info("Data cleaned and transformed")
+            ROWS_AFTER_TRANSFORM.set(len(df))
+            TRANSFORMATION_DURATION.observe(time.time() - start)
             return df
 
         except Exception as e:

@@ -4,8 +4,15 @@ from src.exception import CustomException
 import pandas as pd
 import requests
 import sys
+from prometheus_client import start_http_server
+from src.monitoring.metrics import (
+    INGESTION_RUNS,
+    INGESTION_FAILURES,
+    INGESTION_DURATION,
+    ROWS_INGESTED
+)
 
-
+import time
 
 class DataIngestion():
     
@@ -20,46 +27,56 @@ class DataIngestion():
         
     
     def fetch_data(self) -> pd.DataFrame:
-        """
-        Fetch data from World Bank API and return as pandas DataFrame.
-        Handles the pagination scenario.
-        """
-        params = {"format": "json", "per_page": 1000}
-        if self.start_year and self.end_year:
-            params["date"] = f"{self.start_year}:{self.end_year}"
+        INGESTION_RUNS.inc()
+        start_time = time.time()
 
-        all_records = []
-        page = 1
+        try:
+            params = {"format": "json", "per_page": 1000}
+            if self.start_year and self.end_year:
+                params["date"] = f"{self.start_year}:{self.end_year}"
+
+            all_records = []
+            page = 1
         
-        url = f"{self.base_url}/{self.country}/indicator/{self.indicator}"
+            url = f"{self.base_url}/{self.country}/indicator/{self.indicator}"
 
-        while True:
-            params["page"] = page
-            response = requests.get(url, params=params)
-            
-            logging.info(f"Fetched page {page} from {url}")
-            logging.info("converted the response to JSON")
+            while True:
+                params["page"] = page
+                response = requests.get(url, params=params)
 
-            if response.status_code != 200:
-                raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
+                if response.status_code != 200:
+                    raise Exception(
+                        f"Failed to fetch data. Status code: {response.status_code}"
+                    )
 
-            data = response.json()
-            if not data or len(data) < 2:
-                break
+                data = response.json()
+                if not data or len(data) < 2:
+                    break
 
-            all_records.extend(data[1])
+                all_records.extend(data[1])
 
-            total_pages = data[0].get("pages", 1)
-            if page >= total_pages:
-                break
-            page += 1
+                total_pages = data[0].get("pages", 1)
+                if page >= total_pages:
+                    break
+                page += 1
 
-        if not all_records:
-            raise Exception("No data retrieved from API")
+            if not all_records:
+                raise Exception("No data retrieved from API")
 
-        df = pd.json_normalize(all_records)
-        logging.info("JSON normalized")
-        return df
+            df = pd.json_normalize(all_records)
+
+            ROWS_INGESTED.set(len(df))
+
+            logging.info("JSON normalized")
+            return df
+
+        except Exception as e:
+            INGESTION_FAILURES.inc()
+            raise CustomException(e, sys)
+
+        finally:
+            INGESTION_DURATION.observe(time.time() - start_time)
+
 
     def save_raw(self, df: pd.DataFrame, filename: str = None):
         """

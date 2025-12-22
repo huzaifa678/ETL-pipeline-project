@@ -2,9 +2,18 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
 import os
-
 from src.component.data_ingestion import DataIngestion
 from src.component.data_transformer import DataTransformer
+from prometheus_client import start_http_server
+import logging
+
+PROMETHEUS_PORT = 8000
+
+try:
+    start_http_server(PROMETHEUS_PORT)
+    logging.info(f"Prometheus metrics server started on port {PROMETHEUS_PORT}")
+except OSError:
+    logging.warning(f"Prometheus server already running on port {PROMETHEUS_PORT}")
 
 
 default_args = {

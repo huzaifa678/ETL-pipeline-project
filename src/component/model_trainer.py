@@ -1,12 +1,14 @@
 import os
 import logging
 import sys
+import mlflow
 import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from src.exception import CustomException
+from src.monitoring.metrics import MODEL_R2, MODEL_RMSE
 
 
 class ModelTrainer:
@@ -42,17 +44,26 @@ class ModelTrainer:
         except Exception as e:
             raise CustomException(e)
 
-    def train(self, X_train, y_train):
-        """
-        Train a regression model.
-        """
-        try:
+    def train_and_log(self, X_train, X_test, y_train, y_test):
+        with mlflow.start_run():
+
             model = LinearRegression()
             model.fit(X_train, y_train)
-            logging.info("Model training complete")
-            return model
-        except Exception as e:
-            raise CustomException(e)
+
+            preds = model.predict(X_test)
+            rmse = mean_squared_error(y_test, preds) ** 0.5
+            r2 = r2_score(y_test, preds)
+
+            mlflow.log_metric("rmse", rmse)
+            mlflow.log_metric("r2", r2)
+
+            mlflow.log_param("model_type", "LinearRegression")
+            mlflow.log_param("train_size", len(X_train))
+
+            mlflow.sklearn.log_model(model, "model")
+
+            return model, {"rmse": rmse, "r2": r2}
+
 
     def evaluate(self, model, X_test, y_test):
         """
@@ -66,6 +77,9 @@ class ModelTrainer:
 
             r2 = r2_score(y_test, preds)
             r2 = r2_score(y_test, preds)
+            
+            MODEL_RMSE.set(rmse)
+            MODEL_R2.set(r2)
 
             logging.info(f"Model Evaluation -> RMSE: {rmse}, R2: {r2}")
             print(f"📊 RMSE: {rmse:.2f}, R²: {r2:.2f}")

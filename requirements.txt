@@ -7,3 +7,5 @@ scikit-learn
 mlflow
 apache-airflow
 dvc
+dvc-s3
+prometheus-client
