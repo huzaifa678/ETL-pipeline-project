@@ -1,0 +1,17 @@
+[ 2026-02-23 03:36:56,102 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): api.worldbank.org:80
+[ 2026-02-23 03:36:56,216 ] 544 urllib3.connectionpool - DEBUG - http://api.worldbank.org:80 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 302 143
+[ 2026-02-23 03:36:56,218 ] 1049 urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.worldbank.org:443
+[ 2026-02-23 03:36:56,316 ] 544 urllib3.connectionpool - DEBUG - https://config.mlflow-telemetry.io:443 "GET /3.3.1.json HTTP/1.1" 403 None
+[ 2026-02-23 03:36:56,640 ] 544 urllib3.connectionpool - DEBUG - https://api.worldbank.org:443 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 200 None
+[ 2026-02-23 03:36:56,648 ] 69 root - INFO - JSON normalized
+[ 2026-02-23 03:36:56,654 ] 90 root - INFO - Data has been saved in the CSV format
+[ 2026-02-23 03:36:56,657 ] 25 root - INFO - Loaded raw data from /Users/salmanahmadgill/ETL/data/raw/SP.POP.TOTL_2000_2022.csv
+[ 2026-02-23 03:36:56,663 ] 57 root - INFO - Data cleaned and transformed
+[ 2026-02-23 03:36:56,664 ] 75 root - INFO - Transformed data saved
+[ 2026-02-23 03:36:56,665 ] 26 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2026-02-23 03:36:56,668 ] 42 root - INFO - Prepared features and target
+[ 2026-02-23 03:36:56,721 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:36:56,733 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:36:56,743 ] 494 git.util - DEBUG - sys.platform='darwin', git_executable='git'
+[ 2026-02-23 03:36:56,744 ] 1270 git.cmd - DEBUG - Popen(['git', 'check-ignore', '/Users/salmanahmadgill/ETL/src'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:36:56,753 ] 1270 git.cmd - DEBUG - Popen(['git', 'cat-file', '--batch-check'], cwd=/Users/salmanahmadgill/ETL, stdin=<valid stream>, shell=False, universal_newlines=False)

@@ -4,7 +4,6 @@ from src.exception import CustomException
 import pandas as pd
 import requests
 import sys
-from prometheus_client import start_http_server
 from src.monitoring.metrics import (
     INGESTION_RUNS,
     INGESTION_FAILURES,

@@ -4,6 +4,7 @@ import logging
 from src.component.model_trainer import ModelTrainer
 from src.component.data_ingestion import DataIngestion
 from src.component.data_transformer import DataTransformer
+from src.monitoring.push import push_metrics
 
 
 def run_pipeline():
@@ -30,9 +31,13 @@ def run_pipeline():
     trainer = ModelTrainer(input_file=transformed_path)
     df = trainer.load_data()
     X_train, X_test, y_train, y_test = trainer.prepare_data(df)
-    model = trainer.train(X_train, y_train)
+    model, _ = trainer.train_and_log(
+        X_train, X_test, y_train, y_test
+    )
     trainer.evaluate(model, X_test, y_test)
     trainer.save_model(model, filename="model.pkl")
+    
+    push_metrics(job_name="population_etl")
 
     print("\n Full ETL Pipeline Completed Successfully!")
 

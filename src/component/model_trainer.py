@@ -10,6 +10,12 @@ from sklearn.metrics import mean_squared_error, r2_score
 from src.exception import CustomException
 from src.monitoring.metrics import MODEL_R2, MODEL_RMSE
 
+mlflow.set_tracking_uri("http://localhost:5000")
+
+experiment_name = "ETL_Project_v2" 
+if not mlflow.get_experiment_by_name(experiment_name):
+    mlflow.create_experiment(experiment_name)
+mlflow.set_experiment(experiment_name)
 
 class ModelTrainer:
     def __init__(self, input_file: str):

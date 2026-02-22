@@ -1,0 +1,30 @@
+[ 2026-02-23 03:40:50,900 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): api.worldbank.org:80
+[ 2026-02-23 03:40:51,019 ] 544 urllib3.connectionpool - DEBUG - http://api.worldbank.org:80 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 302 143
+[ 2026-02-23 03:40:51,021 ] 1049 urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.worldbank.org:443
+[ 2026-02-23 03:40:51,517 ] 544 urllib3.connectionpool - DEBUG - https://api.worldbank.org:443 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 200 None
+[ 2026-02-23 03:40:51,527 ] 69 root - INFO - JSON normalized
+[ 2026-02-23 03:40:51,536 ] 90 root - INFO - Data has been saved in the CSV format
+[ 2026-02-23 03:40:51,541 ] 25 root - INFO - Loaded raw data from /Users/salmanahmadgill/ETL/data/raw/SP.POP.TOTL_2000_2022.csv
+[ 2026-02-23 03:40:51,551 ] 57 root - INFO - Data cleaned and transformed
+[ 2026-02-23 03:40:51,552 ] 75 root - INFO - Transformed data saved
+[ 2026-02-23 03:40:51,554 ] 28 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2026-02-23 03:40:51,562 ] 44 root - INFO - Prepared features and target
+[ 2026-02-23 03:40:51,639 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:40:51,656 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:40:51,670 ] 494 git.util - DEBUG - sys.platform='darwin', git_executable='git'
+[ 2026-02-23 03:40:51,671 ] 1270 git.cmd - DEBUG - Popen(['git', 'check-ignore', '/Users/salmanahmadgill/ETL/src'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:40:51,685 ] 1270 git.cmd - DEBUG - Popen(['git', 'cat-file', '--batch-check'], cwd=/Users/salmanahmadgill/ETL, stdin=<valid stream>, shell=False, universal_newlines=False)
+[ 2026-02-23 03:40:51,716 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:5000
+[ 2026-02-23 03:40:51,719 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=6, connect=6, read=7, redirect=7, status=7)
+[ 2026-02-23 03:40:51,719 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=6, connect=6, read=7, redirect=7, status=7)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11b20bed0>: Failed to establish a new connection: [Errno 61] Connection refused')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:40:51,719 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): localhost:5000
+[ 2026-02-23 03:40:51,720 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=5, connect=5, read=7, redirect=7, status=7)
+[ 2026-02-23 03:40:56,545 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=5, connect=5, read=7, redirect=7, status=7)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11b330050>: Failed to establish a new connection: [Errno 61] Connection refused')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:40:56,546 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (3): localhost:5000
+[ 2026-02-23 03:40:56,549 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=4, connect=4, read=7, redirect=7, status=7)
+[ 2026-02-23 03:41:04,928 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=4, connect=4, read=7, redirect=7, status=7)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11b272d70>: Failed to establish a new connection: [Errno 61] Connection refused')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:41:04,933 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (4): localhost:5000
+[ 2026-02-23 03:41:04,940 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=3, connect=3, read=7, redirect=7, status=7)
+[ 2026-02-23 03:41:21,322 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=3, connect=3, read=7, redirect=7, status=7)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11b272ea0>: Failed to establish a new connection: [Errno 61] Connection refused')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:41:21,326 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (5): localhost:5000
+[ 2026-02-23 03:41:21,331 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=2, connect=2, read=7, redirect=7, status=7)

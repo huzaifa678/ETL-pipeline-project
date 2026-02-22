@@ -1,0 +1,44 @@
+[ 2026-02-23 03:46:04,213 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): api.worldbank.org:80
+[ 2026-02-23 03:46:04,380 ] 544 urllib3.connectionpool - DEBUG - http://api.worldbank.org:80 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 302 143
+[ 2026-02-23 03:46:04,383 ] 1049 urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.worldbank.org:443
+[ 2026-02-23 03:46:04,891 ] 544 urllib3.connectionpool - DEBUG - https://api.worldbank.org:443 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 200 None
+[ 2026-02-23 03:46:04,910 ] 69 root - INFO - JSON normalized
+[ 2026-02-23 03:46:04,930 ] 90 root - INFO - Data has been saved in the CSV format
+[ 2026-02-23 03:46:04,936 ] 25 root - INFO - Loaded raw data from /Users/salmanahmadgill/ETL/data/raw/SP.POP.TOTL_2000_2022.csv
+[ 2026-02-23 03:46:04,954 ] 57 root - INFO - Data cleaned and transformed
+[ 2026-02-23 03:46:04,958 ] 75 root - INFO - Transformed data saved
+[ 2026-02-23 03:46:04,960 ] 28 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2026-02-23 03:46:04,967 ] 44 root - INFO - Prepared features and target
+[ 2026-02-23 03:46:05,071 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:46:05,102 ] 1270 git.cmd - DEBUG - Popen(['git', 'version'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:46:05,120 ] 494 git.util - DEBUG - sys.platform='darwin', git_executable='git'
+[ 2026-02-23 03:46:05,123 ] 1270 git.cmd - DEBUG - Popen(['git', 'check-ignore', '/Users/salmanahmadgill/ETL/src'], cwd=/Users/salmanahmadgill/ETL, stdin=None, shell=False, universal_newlines=False)
+[ 2026-02-23 03:46:05,148 ] 1270 git.cmd - DEBUG - Popen(['git', 'cat-file', '--batch-check'], cwd=/Users/salmanahmadgill/ETL, stdin=<valid stream>, shell=False, universal_newlines=False)
+[ 2026-02-23 03:46:05,202 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:5000
+[ 2026-02-23 03:46:05,210 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=6, connect=7, read=6, redirect=7, status=7)
+[ 2026-02-23 03:46:05,210 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=6, connect=7, read=6, redirect=7, status=7)) after connection broken by 'ConnectionResetError(54, 'Connection reset by peer')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:46:05,210 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): localhost:5000
+[ 2026-02-23 03:46:05,212 ] 521 urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/2.0/mlflow/runs/create'): Retry(total=5, connect=7, read=5, redirect=7, status=7)
+[ 2026-02-23 03:46:09,398 ] 868 urllib3.connectionpool - WARNING - Retrying (Retry(total=5, connect=7, read=5, redirect=7, status=7)) after connection broken by 'ConnectionResetError(54, 'Connection reset by peer')': /api/2.0/mlflow/runs/create
+[ 2026-02-23 03:46:09,401 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (3): localhost:5000
+[ 2026-02-23 03:46:11,727 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/create HTTP/1.1" 200 1011
+[ 2026-02-23 03:46:12,365 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1030
+[ 2026-02-23 03:46:12,520 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1030
+[ 2026-02-23 03:46:12,948 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 2
+[ 2026-02-23 03:46:13,067 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1200
+[ 2026-02-23 03:46:13,175 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1200
+[ 2026-02-23 03:46:13,588 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/log-metric HTTP/1.1" 200 2
+[ 2026-02-23 03:46:14,194 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 2
+[ 2026-02-23 03:46:14,320 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/log-parameter HTTP/1.1" 200 2
+[ 2026-02-23 03:46:14,447 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1531
+[ 2026-02-23 03:46:14,755 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/logged-models HTTP/1.1" 200 1123
+[ 2026-02-23 03:46:14,976 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/outputs HTTP/1.1" 200 2
+[ 2026-02-23 03:46:15,290 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1669
+[ 2026-02-23 03:46:15,412 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/metrics/get-history?run_uuid=d700a0ef06d843ffabfa452182556057&metric_key=rmse&run_id=d700a0ef06d843ffabfa452182556057&max_results=25000 HTTP/1.1" 200 140
+[ 2026-02-23 03:46:15,487 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/metrics/get-history?run_uuid=d700a0ef06d843ffabfa452182556057&metric_key=r2&run_id=d700a0ef06d843ffabfa452182556057&max_results=25000 HTTP/1.1" 200 136
+[ 2026-02-23 03:46:15,656 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/log-batch HTTP/1.1" 200 2
+[ 2026-02-23 03:46:21,128 ] 289 urllib3.connectionpool - DEBUG - Resetting dropped connection: localhost
+[ 2026-02-23 03:46:21,415 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/logged-models/m-21d46d3ca61d43e6be5ed21dfdc1fef5 HTTP/1.1" 200 1664
+[ 2026-02-23 03:46:21,476 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "PATCH /api/2.0/mlflow/logged-models/m-21d46d3ca61d43e6be5ed21dfdc1fef5 HTTP/1.1" 200 1670
+[ 2026-02-23 03:46:21,551 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/2.0/mlflow/runs/get?run_uuid=d700a0ef06d843ffabfa452182556057&run_id=d700a0ef06d843ffabfa452182556057 HTTP/1.1" 200 1669
+[ 2026-02-23 03:46:21,619 ] 544 urllib3.connectionpool - DEBUG - http://localhost:5000 "POST /api/2.0/mlflow/runs/update HTTP/1.1" 200 427

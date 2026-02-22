@@ -1,0 +1,11 @@
+[ 2026-02-23 03:35:16,297 ] 241 urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): api.worldbank.org:80
+[ 2026-02-23 03:35:16,489 ] 544 urllib3.connectionpool - DEBUG - http://api.worldbank.org:80 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 302 143
+[ 2026-02-23 03:35:16,491 ] 1049 urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.worldbank.org:443
+[ 2026-02-23 03:35:17,298 ] 544 urllib3.connectionpool - DEBUG - https://api.worldbank.org:443 "GET /v2/countries/br;cn;us;de/indicator/SP.POP.TOTL?format=json&per_page=1000&date=2000%3A2022&page=1 HTTP/1.1" 200 None
+[ 2026-02-23 03:35:17,305 ] 69 root - INFO - JSON normalized
+[ 2026-02-23 03:35:17,312 ] 90 root - INFO - Data has been saved in the CSV format
+[ 2026-02-23 03:35:17,315 ] 25 root - INFO - Loaded raw data from /Users/salmanahmadgill/ETL/data/raw/SP.POP.TOTL_2000_2022.csv
+[ 2026-02-23 03:35:17,319 ] 57 root - INFO - Data cleaned and transformed
+[ 2026-02-23 03:35:17,320 ] 75 root - INFO - Transformed data saved
+[ 2026-02-23 03:35:17,321 ] 26 root - INFO - Loaded processed data from /Users/salmanahmadgill/ETL/data/processed/transformed_data.csv
+[ 2026-02-23 03:35:17,323 ] 42 root - INFO - Prepared features and target
