@@ -1,7 +1,9 @@
 /ETL/
 mlruns
 mlartifacts
-data/raw
 data/processed
-data/raw.dvc
-data/processed.dvc
+data/raw
+!data/raw.dvc
+!data/processed.dvc
+mlruns/
+mlartifacts/
