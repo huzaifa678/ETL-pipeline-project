@@ -1,0 +1,43 @@
+name: DVC Data Push
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dvc_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Configure Git
+        run: |
+            git config --global user.email "huzaifa678"
+            git config --global user.name "huzaifaahmad2210@gmail.com"
+
+      - name: Pull Latest DVC Data
+        run: dvc pull
+
+      - name: Track Raw Data
+        run: |
+          dvc add data/raw/*
+          dvc add data/processed/*
+          dvc add model/*
+
+      - name: Push to DVC Remote
+        run: dvc push
+
+      - name: Commit DVC changes
+        run: |
+          git add data/*.dvc model/*.dvc
+          git commit -m "CI: update DVC tracked files" || echo "No changes to commit"
+          git push origin main
