@@ -7,3 +7,5 @@ data/raw
 !data/processed.dvc
 mlruns/
 mlartifacts/
+model/model.pkl
+!model/model.pkl.dvc
