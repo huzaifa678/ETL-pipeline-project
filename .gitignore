@@ -9,3 +9,4 @@ mlruns/
 mlartifacts/
 model/model.pkl
 !model/model.pkl.dvc
+.dvc/tmp
