@@ -48,3 +48,5 @@ jobs:
           git add data/*.dvc model/*.dvc
           git commit -m "CI: update DVC tracked files" || echo "No changes to commit"
           git push origin main
+        env:
+            PAT_TOKEN: ${{ secrets.ETL_PAT_TOKEN }}
