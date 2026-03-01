@@ -40,7 +40,6 @@ jobs:
         run: |
           dvc add data/raw/*
           dvc add data/processed/*
-          dvc add model/model.pkl
 
       - name: Push to DVC Remote
         run: dvc push

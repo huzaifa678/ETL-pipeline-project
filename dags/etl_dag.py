@@ -7,6 +7,7 @@ from src.component.data_ingestion import DataIngestion
 from src.component.data_transformer import DataTransformer
 from src.component.model_trainer import ModelTrainer
 from src.monitoring.push import push_metrics
+from src.store.s3_store_model import upload_model_to_s3
 
 RAW_DIR = os.path.join(os.getcwd(), "data", "raw")
 PROCESSED_DIR = os.path.join(os.getcwd(), "data", "processed")
@@ -26,7 +27,7 @@ def ingestion_task():
         indicator="SP.POP.TOTL",
         countries="br;cn;us;de",
         start_year=2000,
-        end_year=2022,
+        end_year=datetime.now().year,
     )
     df = ingestion.fetch_data()
     ingestion.save_raw(df, filename=RAW_FILE)
@@ -46,6 +47,13 @@ def training_task():
     model, _ = trainer.train_and_log(X_train, X_test, y_train, y_test)
     trainer.evaluate(model, X_test, y_test)
     trainer.save_model(model, filename=MODEL_FILE)
+    
+    upload_model_to_s3(
+        model=model,
+        bucket="etl-dvc-bucket",
+        stage="staging",  
+        metrics=metrics
+    )
 
 def push_metrics_task():
     push_metrics(job_name="worldbank_population_etl")

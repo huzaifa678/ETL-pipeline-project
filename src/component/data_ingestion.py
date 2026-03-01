@@ -1,5 +1,7 @@
 import os
 import logging
+
+from pendulum import datetime
 from src.exception import CustomException
 import pandas as pd
 import requests
@@ -99,7 +101,7 @@ if __name__ == "__main__":
         indicator="SP.POP.TOTL",
         countries="br;cn;us;de",
         start_year=2000,
-        end_year=2022
+        end_year=datetime.now().year
     )
     df = ingestion.fetch_data()
     ingestion.save_raw(df)
