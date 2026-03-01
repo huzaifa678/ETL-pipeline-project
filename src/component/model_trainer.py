@@ -1,10 +1,8 @@
 import os
 import logging
-import sys
 import mlflow
 import pandas as pd
 import joblib
-from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
@@ -12,12 +10,14 @@ from src.exception import CustomException
 from src.monitoring.metrics import MODEL_R2, MODEL_RMSE
 from src.store.s3_store_model import upload_model_to_s3  
 
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
 
 EXPERIMENT_NAME = "ETL_Project_v2" 
 if not mlflow.get_experiment_by_name(EXPERIMENT_NAME):
     mlflow.create_experiment(EXPERIMENT_NAME)
 mlflow.set_experiment(EXPERIMENT_NAME)
+
+MODEL_NAME = "worldbank_population"
 
 
 class ModelTrainer:
@@ -46,7 +46,7 @@ class ModelTrainer:
             raise CustomException(e)
 
     def train_and_log(self, X_train, X_test, y_train, y_test):
-        with mlflow.start_run():
+        with mlflow.start_run() as run:
             model = LinearRegression()
             model.fit(X_train, y_train)
 
@@ -60,7 +60,7 @@ class ModelTrainer:
             mlflow.log_param("train_size", len(X_train))
             mlflow.sklearn.log_model(model, "model")
 
-            return model, {"rmse": rmse, "r2": r2}
+            return model, {"rmse": rmse, "r2": r2}, run.info.run_id
 
     def evaluate(self, model, X_test, y_test):
         try:
@@ -76,6 +76,51 @@ class ModelTrainer:
             return {"rmse": rmse, "r2": r2}
         except Exception as e:
             raise CustomException(e)
+        
+
+    def register_and_transition_model(self, X_train, X_test, y_train, y_test, model_name="worldbank_population"):
+        """
+        Train the model using train_and_log(), evaluate metrics using evaluate(),
+        and register in MLflow registry if RMSE improves.
+        """
+        model, metrics, run_id = self.train_and_log(X_train, X_test, y_train, y_test)
+
+        metrics = self.evaluate(model, X_test, y_test)
+
+        client = mlflow.MlflowClient()
+        with mlflow.start_run() as run:
+            model_uri = f"runs:/{run_id}/model"
+
+            try:
+                last_versions = client.get_latest_versions(model_name, stages=["Staging", "Production"])
+                if last_versions:
+                    last_rmses = [float(client.get_metric_history(v.run_id, "rmse")[-1].value) for v in last_versions]
+                    best_rmse = min(last_rmses)
+
+                    if metrics["rmse"] >= best_rmse:
+                        print(f"Model RMSE ({metrics['rmse']:.4f}) did not improve over last best ({best_rmse:.4f}). Skipping registration.")
+                        return model, metrics
+
+                mv = mlflow.register_model(model_uri=model_uri, name=model_name)
+                client.transition_model_version_stage(
+                    name=model_name,
+                    version=mv.version,
+                    stage="Staging",
+                    archive_existing_versions=True
+                )
+                print(f"Registered new version {mv.version} of model '{model_name}' in Staging.")
+
+            except Exception as e:
+                print(f"No previous versions found. Registering first model: {e}")
+                mv = mlflow.register_model(model_uri=model_uri, name=model_name)
+                client.transition_model_version_stage(
+                    name=model_name,
+                    version=mv.version,
+                    stage="Staging"
+                )
+                print(f"Registered first version {mv.version} of model '{model_name}' in Staging.")
+
+        return model, metrics
 
     def save_model(self, model, filename: str = "model.pkl", stage: str = "staging", metrics: dict = None):
         """

@@ -9,3 +9,4 @@ apache-airflow
 dvc
 dvc-s3
 prometheus-client
+boto3

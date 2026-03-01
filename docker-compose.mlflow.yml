@@ -6,6 +6,8 @@ services:
     user: root
     ports:
       - "5000:5000"
+    environment:
+      - MLFLOW_SERVER_ALLOWED_HOSTS=*
     command: >
       mlflow server 
       --host 0.0.0.0 
@@ -16,3 +18,10 @@ services:
     volumes:
       - ./mlflow_data/artifacts:/mlflow/artifacts
       - ./mlflow_data/db:/mlflow
+    networks:
+      - astro_network
+
+networks:
+  astro_network:
+    external: true
+    name: etl_440f46_airflow
