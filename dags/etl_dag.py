@@ -65,6 +65,9 @@ def training_task():
     import os
     from src.component.model_trainer import ModelTrainer
     from src.store.s3_store_model import upload_model_to_s3
+    import mlflow
+    
+    print("Tracking URI:", mlflow.get_tracking_uri())
 
     model_dir = os.path.join(os.getcwd(), "model")
     os.makedirs(model_dir, exist_ok=True)

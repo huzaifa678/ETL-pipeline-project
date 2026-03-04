@@ -1,6 +1,9 @@
 import os
 import logging
+from pyexpat import model
 import mlflow
+from mlflow import artifacts, run
+from opentelemetry import metrics
 import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
@@ -11,6 +14,7 @@ from src.monitoring.metrics import MODEL_R2, MODEL_RMSE
 from src.store.s3_store_model import upload_model_to_s3  
 
 mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
+
 
 EXPERIMENT_NAME = "ETL_Project_v2" 
 if not mlflow.get_experiment_by_name(EXPERIMENT_NAME):
@@ -45,22 +49,25 @@ class ModelTrainer:
         except Exception as e:
             raise CustomException(e)
 
-    def train_and_log(self, X_train, X_test, y_train, y_test):
-        with mlflow.start_run() as run:
-            model = LinearRegression()
-            model.fit(X_train, y_train)
+    def train_and_log(self, X_train, X_test, y_train, y_test, run):
+        if run is None:
+            raise ValueError("MLflow run must be provided for logging")
 
-            preds = model.predict(X_test)
-            rmse = mean_squared_error(y_test, preds) ** 0.5
-            r2 = r2_score(y_test, preds)
+        model = LinearRegression()
+        model.fit(X_train, y_train)
 
-            mlflow.log_metric("rmse", rmse)
-            mlflow.log_metric("r2", r2)
-            mlflow.log_param("model_type", "LinearRegression")
-            mlflow.log_param("train_size", len(X_train))
-            mlflow.sklearn.log_model(model, "model")
+        preds = model.predict(X_test)
+        rmse = mean_squared_error(y_test, preds) ** 0.5
+        r2 = r2_score(y_test, preds)
 
-            return model, {"rmse": rmse, "r2": r2}, run.info.run_id
+        mlflow.log_metric("rmse", rmse)
+        mlflow.log_metric("r2", r2)
+        mlflow.log_param("model_type", "LinearRegression")
+        mlflow.log_param("train_size", len(X_train))
+        mlflow.sklearn.log_model(model, artifact_path="models")
+
+        run_id = run.info.run_id
+        return model, {"rmse": rmse, "r2": r2}, run_id
 
     def evaluate(self, model, X_test, y_test):
         try:
@@ -80,45 +87,47 @@ class ModelTrainer:
 
     def register_and_transition_model(self, X_train, X_test, y_train, y_test, model_name="worldbank_population"):
         """
-        Train the model using train_and_log(), evaluate metrics using evaluate(),
-        and register in MLflow registry if RMSE improves.
+        Train, evaluate, log metrics, and register model in MLflow atomically.
         """
-        model, metrics, run_id = self.train_and_log(X_train, X_test, y_train, y_test)
-
-        metrics = self.evaluate(model, X_test, y_test)
-
         client = mlflow.MlflowClient()
+
+        try:
+            client.get_registered_model(model_name)
+        except mlflow.exceptions.RestException:
+            client.create_registered_model(model_name)
+
         with mlflow.start_run() as run:
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+
+            metrics = self.evaluate(model, X_test, y_test)
+
+            mlflow.log_metric("rmse", metrics["rmse"])
+            mlflow.log_metric("r2", metrics["r2"])
+            mlflow.log_param("model_type", "LinearRegression")
+            mlflow.sklearn.log_model(model, artifact_path="model", registered_model_name=model_name)
+
+            run_id = run.info.run_id
             model_uri = f"runs:/{run_id}/model"
 
-            try:
-                last_versions = client.get_latest_versions(model_name, stages=["Staging", "Production"])
-                if last_versions:
-                    last_rmses = [float(client.get_metric_history(v.run_id, "rmse")[-1].value) for v in last_versions]
-                    best_rmse = min(last_rmses)
+            last_versions = client.get_latest_versions(model_name, stages=["Staging", "Production"])
+            if last_versions:
+                last_rmses = [
+                    float(client.get_metric_history(v.run_id, "rmse")[-1].value) for v in last_versions
+                ]
+                best_rmse = min(last_rmses)
+                if metrics["rmse"] >= best_rmse:
+                    print(f"RMSE ({metrics['rmse']:.4f}) did not improve ({best_rmse:.4f}). Skipping registration.")
+                    return model, metrics
 
-                    if metrics["rmse"] >= best_rmse:
-                        print(f"Model RMSE ({metrics['rmse']:.4f}) did not improve over last best ({best_rmse:.4f}). Skipping registration.")
-                        return model, metrics
-
-                mv = mlflow.register_model(model_uri=model_uri, name=model_name)
-                client.transition_model_version_stage(
-                    name=model_name,
-                    version=mv.version,
-                    stage="Staging",
-                    archive_existing_versions=True
-                )
-                print(f"Registered new version {mv.version} of model '{model_name}' in Staging.")
-
-            except Exception as e:
-                print(f"No previous versions found. Registering first model: {e}")
-                mv = mlflow.register_model(model_uri=model_uri, name=model_name)
-                client.transition_model_version_stage(
-                    name=model_name,
-                    version=mv.version,
-                    stage="Staging"
-                )
-                print(f"Registered first version {mv.version} of model '{model_name}' in Staging.")
+            mv = mlflow.register_model(model_uri=model_uri, name=model_name)
+            client.transition_model_version_stage(
+                name=model_name,
+                version=mv.version,
+                stage="Staging",
+                archive_existing_versions=True
+            )
+            print(f"Registered version {mv.version} of '{model_name}' in Staging.")
 
         return model, metrics
 
