@@ -8,3 +8,4 @@ data/raw
 mlruns/
 mlartifacts/
 model/model.pkl
+.env
