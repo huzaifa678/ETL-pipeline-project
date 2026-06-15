@@ -59,13 +59,17 @@
 
 ### Start 
 
-`docker compose up -d`
+```bash
+docker compose up -d
+```
 
 ### UI
 
   * #### Access the Airflow UI
 
-      `http://localhost:8080`
+      ``` bash
+      http://localhost:8080
+      ```
 
       * ##### Use default credentials or configure your own credentials
 
@@ -73,10 +77,14 @@
 
   * #### Access the Mlflow UI
 
-      `http://localhost:5000`
+      ```bash
+      http://localhost:5000
+      ```
 
   * #### Access the Grafana UI
 
-      `http://localhost:9090`
+      ```bash
+      http://localhost:9090
+      ```
 
       * ##### Access Prometheus from data sources
