@@ -57,6 +57,12 @@
 
 * #### Docker MUST be installed and should be started
 
+* #### Set your AWS credentials and setup your S3 Bucket
+
+    ```bash
+    export AWS_ACCESS_KEY_ID=   AWS_SECRET_ACCESS_KEY=  AWS_DEFAULT_REGION=
+    ```
+
 ### Start 
 
 ```bash
