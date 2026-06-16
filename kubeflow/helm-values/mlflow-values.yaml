@@ -1,0 +1,44 @@
+fullnameOverride: mlflow
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 5000
+
+backendStore:
+  databaseMigration: true
+
+# MLflow 3.x rejects requests whose Host header isn't allow-listed (DNS-rebinding
+# protection). In-cluster clients reach it via mlflow.worldbank.svc.cluster.local,
+# so allow all hosts (fine for a local cluster).
+extraEnvVars:
+  MLFLOW_SERVER_ALLOWED_HOSTS: "*"
+
+postgresql:
+  enabled: true
+  auth:
+    username: mlflow
+    database: mlflow
+    # Password comes from a K8s Secret, not plaintext here. The secret MUST be
+    # named "mlflow-postgresql" — that's the name MLflow's own deployment expects
+    # for its PGPASSWORD ref — and carry keys `password` (user) and
+    # `postgres-password` (admin). Created by `make secrets`.
+    existingSecret: mlflow-postgresql
+    secretKeys:
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+  primary:
+    persistence:
+      enabled: true
+      size: 2Gi
+
+artifactRoot:
+  s3:
+    enabled: true
+    bucket: etl-dvc-bucket
+    path: mlflow         
+    existingSecret:
+      name: aws-credentials
+      keyOfAccessKeyId: AWS_ACCESS_KEY_ID
+      keyOfSecretAccessKey: AWS_SECRET_ACCESS_KEY

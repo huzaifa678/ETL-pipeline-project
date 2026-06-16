@@ -1,0 +1,25 @@
+# Helm values for the official Spark Operator chart
+# helm repo add spark-operator https://kubeflow.github.io/spark-operator
+# helm install spark-operator spark-operator/spark-operator -f spark-operator-values.yaml
+
+# Use the image pre-loaded into kind (ghcr.io pulls time out on this network);
+# IfNotPresent makes the kubelet use the local copy instead of pulling.
+image:
+  pullPolicy: IfNotPresent
+
+spark:
+  # Namespaces the operator is allowed to manage SparkApplications in.
+  jobNamespaces:
+    - worldbank
+
+controller:
+  # One replica is plenty for a local cluster.
+  replicas: 1
+
+webhook:
+  enable: true
+
+# Service account the Spark driver/executor pods run as; the chart creates it
+# in each job namespace and grants the RBAC the driver needs to create executors.
+rbac:
+  create: true

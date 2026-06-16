@@ -90,13 +90,15 @@ class DataIngestion():
             filepath = os.path.join(self.output_dir, filename)
             df.to_csv(filepath, index=False)
             logging.info("Data has been saved in the CSV format")
-            print(f"✅ Data saved at {filepath}")
+            logging.info("Data saved at %s", filepath)
             
         except Exception as e:
             CustomException(e, sys)
             
             
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
     ingestion = DataIngestion(
         indicator="SP.POP.TOTL",
         countries="br;cn;us;de",
@@ -105,5 +107,5 @@ if __name__ == "__main__":
     )
     df = ingestion.fetch_data()
     ingestion.save_raw(df)
-    print(df.head())
+    logging.info("Sample data:\n%s", df.head())
     

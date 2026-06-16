@@ -1,0 +1,17 @@
+# Helm values for the official KServe chart (the `kserve` chart, installed after
+# the `kserve-crd` chart). Both are pulled from oci://ghcr.io/kserve/charts.
+#
+# RawDeployment mode avoids the Knative + Istio dependency, which is far too heavy
+# for a local kind cluster. InferenceServices become plain Deployment + Service.
+kserve:
+  controller:
+    deploymentMode: RawDeployment
+    gateway:
+      # Not used in RawDeployment, but keep the values schema happy.
+      ingressGateway:
+        className: ""
+  # Pre-bake the sklearn serving runtime so InferenceServices with
+  # `predictor.sklearn` resolve out of the box.
+  servingruntime:
+    sklearnserver:
+      enabled: true

@@ -1,0 +1,28 @@
+worldbank workloads deployed to namespace "{{ .Values.namespace }}".
+
+Check status:
+  kubectl -n {{ .Values.namespace }} get sparkapplications,experiments.kubeflow.org,inferenceservices,pods
+
+{{- if .Values.spark.enabled }}
+
+Spark ETL writes processed parquet to:
+  {{ include "worldbank.processedS3a" . }}
+{{- end }}
+{{- if .Values.katib.enabled }}
+
+Katib is searching Ridge alpha in [{{ .Values.katib.alpha.min }}, {{ .Values.katib.alpha.max }}]
+({{ .Values.katib.maxTrials }} trials). Watch:
+  kubectl -n {{ .Values.namespace }} get experiment worldbank-ridge-{{ .Release.Revision }} -w
+{{- end }}
+{{- if .Values.kserve.enabled }}
+
+Model is served from {{ include "worldbank.modelUri" . }} (expects model.joblib there;
+run the Katib trial with --register, or upload one, before the InferenceService goes Ready).
+  kubectl -n {{ .Values.namespace }} port-forward svc/worldbank-population-predictor 8082:80
+{{- end }}
+
+MLflow (installed via `make mlflow`):
+  kubectl -n {{ .Values.namespace }} port-forward svc/mlflow 5000:5000
+Grafana / Prometheus (installed via `make monitoring`):
+  kubectl -n monitoring port-forward svc/monitoring-grafana 3000:80
+  kubectl -n monitoring port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090

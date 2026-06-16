@@ -1,0 +1,4 @@
+# Local tooling to compile and schedule the KFP pipeline (host machine, not the
+# cluster image). Install with: pip install -r kubeflow/requirements-kfp.txt
+kfp>=2.7,<3
+kfp-kubernetes>=1.3

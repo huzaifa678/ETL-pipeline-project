@@ -9,3 +9,8 @@ mlruns/
 mlartifacts/
 model/model.pkl
 .env
+
+# Kubeflow: never commit filled-in secrets or compiled pipeline output
+kubeflow/manifests/secrets.yaml
+kubeflow/pipelines/worldbank_pipeline.yaml
+kubeflow/manifests/secrets.yaml.bak

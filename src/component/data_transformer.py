@@ -73,16 +73,18 @@ class DataTransformer:
             filepath = os.path.join(self.output_dir, filename)
             df.to_csv(filepath, index=False)
             logging.info("Transformed data saved")
-            print(f"✅ Transformed data saved at {filepath}")
+            logging.info("Transformed data saved at %s", filepath)
         except Exception as e:
             raise CustomException(e, sys)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
     input_path = os.path.join(os.getcwd(), "data", "raw", "SP.POP.TOTL_2000_2022.csv")
 
     transformer = DataTransformer(input_file=input_path)
     raw_df = transformer.load_raw()
     clean_df = transformer.clean_data(raw_df)
     transformer.save_transformed(clean_df)
-    print(clean_df.head())
+    logging.info("Sample cleaned data:\n%s", clean_df.head())

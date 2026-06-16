@@ -39,7 +39,7 @@ def run_pipeline():
     
     push_metrics(job_name="population_etl")
 
-    print("\n Full ETL Pipeline Completed Successfully!")
+    logging.info("Full ETL Pipeline Completed Successfully!")
 
 
 if __name__ == "__main__":

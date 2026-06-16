@@ -1,0 +1,38 @@
+# Images that time out / are slow to pull from inside kind on this network.
+# Pre-load them from the host (working internet) with:  make preload-images
+#
+# One image ref per line. Blank lines and lines starting with # are ignored.
+# If you see a pod stuck in ImagePullBackOff/ContainerCreating, add its image:
+#   kubectl -n <ns> get pod <pod> -o jsonpath='{.spec.containers[*].image}'
+
+# --- Spark Operator (confirmed: ghcr.io timed out) ---
+ghcr.io/kubeflow/spark-operator/controller:2.5.0
+
+# --- Kubeflow Pipelines (KFP) — captured from stuck ContainerCreating pods ---
+gcr.io/ml-pipeline/api-server:2.2.0
+gcr.io/ml-pipeline/cache-deployer:2.2.0
+gcr.io/ml-pipeline/cache-server:2.2.0
+gcr.io/ml-pipeline/frontend:2.2.0
+gcr.io/ml-pipeline/metadata-envoy:2.2.0
+gcr.io/ml-pipeline/metadata-writer:2.2.0
+gcr.io/ml-pipeline/minio:RELEASE.2019-08-14T20-37-41Z-license-compliance
+gcr.io/ml-pipeline/mysql:8.0.26
+gcr.io/ml-pipeline/persistenceagent:2.2.0
+gcr.io/ml-pipeline/scheduledworkflow:2.2.0
+gcr.io/ml-pipeline/viewer-crd-controller:2.2.0
+gcr.io/ml-pipeline/visualization-server:2.2.0
+gcr.io/ml-pipeline/workflow-controller:v3.4.16-license-compliance
+gcr.io/tfx-oss-public/ml_metadata_store_server:1.14.0
+
+# --- Katib — captured from stuck ContainerCreating pods ---
+docker.io/kubeflowkatib/katib-controller:v0.17.0
+docker.io/kubeflowkatib/katib-db-manager:v0.17.0
+docker.io/kubeflowkatib/katib-ui:v0.17.0
+mysql:8.0.29
+
+# --- MLflow + its Postgres backend ---
+burakince/mlflow:3.13.0
+# NOTE: this uses the :latest tag, so its imagePullPolicy is Always — kubelet
+# will re-pull even after preload. Pin a fixed tag in mlflow-values.yaml
+# (postgresql.image.tag) if you want the preloaded copy to actually be used.
+bitnamilegacy/postgresql:latest

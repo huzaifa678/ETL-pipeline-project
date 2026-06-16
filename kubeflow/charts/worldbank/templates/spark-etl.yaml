@@ -1,0 +1,29 @@
+{{- if .Values.spark.enabled }}
+{{- if .Values.spark.schedule.enabled }}
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: ScheduledSparkApplication
+metadata:
+  name: worldbank-etl
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.spark.schedule.cron }}"
+  concurrencyPolicy: {{ .Values.spark.schedule.concurrencyPolicy }}
+  successfulRunHistoryLimit: 3
+  failedRunHistoryLimit: 3
+  template:
+    {{- include "worldbank.sparkSpec" . | nindent 4 }}
+{{- else }}
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  # Revision suffix so each `helm upgrade` submits a fresh, immutable run.
+  name: worldbank-etl-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+spec:
+  {{- include "worldbank.sparkSpec" . | nindent 2 }}
+{{- end }}
+{{- end }}

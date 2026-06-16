@@ -1,0 +1,65 @@
+{{- if .Values.katib.enabled }}
+apiVersion: kubeflow.org/v1beta1
+kind: Experiment
+metadata:
+  name: worldbank-ridge-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+spec:
+  objective:
+    type: maximize
+    goal: 0.99
+    objectiveMetricName: r2
+    additionalMetricNames:
+      - rmse
+  algorithm:
+    algorithmName: random
+  parallelTrialCount: {{ .Values.katib.parallelTrials }}
+  maxTrialCount: {{ .Values.katib.maxTrials }}
+  maxFailedTrialCount: 3
+  metricsCollectorSpec:
+    collector:
+      kind: StdOut
+  parameters:
+    - name: alpha
+      parameterType: double
+      feasibleSpace:
+        min: "{{ .Values.katib.alpha.min }}"
+        max: "{{ .Values.katib.alpha.max }}"
+  trialTemplate:
+    primaryContainerName: training
+    trialParameters:
+      - name: alpha
+        description: Ridge regularization strength
+        reference: alpha
+    trialSpec:
+      apiVersion: batch/v1
+      kind: Job
+      spec:
+        template:
+          spec:
+            containers:
+              - name: training
+                image: "{{ .Values.images.ml.repository }}:{{ .Values.images.ml.tag }}"
+                imagePullPolicy: {{ .Values.images.ml.pullPolicy }}
+                command:
+                  - python
+                  - /app/katib/train.py
+                  - "--alpha=${trialParameters.alpha}"
+                  - "--data=s3://{{ .Values.s3.bucket }}/{{ .Values.s3.processedPrefix }}"
+                env:
+                  - name: AWS_REGION
+                    value: "{{ .Values.aws.region }}"
+                  - name: AWS_ACCESS_KEY_ID
+                    valueFrom:
+                      secretKeyRef:
+                        name: {{ .Values.aws.secretName }}
+                        key: AWS_ACCESS_KEY_ID
+                  - name: AWS_SECRET_ACCESS_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        name: {{ .Values.aws.secretName }}
+                        key: AWS_SECRET_ACCESS_KEY
+            restartPolicy: Never
+{{- end }}

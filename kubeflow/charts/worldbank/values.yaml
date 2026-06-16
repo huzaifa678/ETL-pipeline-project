@@ -1,0 +1,73 @@
+namespace: worldbank
+
+images:
+  ml:
+    repository: worldbank-ml
+    tag: latest
+    pullPolicy: IfNotPresent
+  spark:
+    repository: worldbank-spark
+    tag: latest
+    pullPolicy: IfNotPresent
+
+aws:
+  region: us-east-1
+  # Secret created by `make secrets` (manifests/secrets.yaml).
+  secretName: aws-credentials
+
+s3:
+  bucket: etl-dvc-bucket
+  rawPrefix: worldbank/raw
+  processedPrefix: worldbank/processed
+  modelPrefix: models/staging/worldbank_population
+  # Object tracking the last ingested year for incremental runs.
+  stateKey: worldbank/state/last_ingested_year.txt
+
+worldbank:
+  indicator: SP.POP.TOTL
+  countries: "br;cn;us;de"
+  startYear: 2000
+  # endYear 0 = "current year" (resolved at run time, not hardcoded).
+  endYear: 0
+  # Only fetch years newer than the last ingested year (from S3 state).
+  incremental: true
+
+# MLflow and the Prometheus/Grafana observability stack are installed as their
+# own Helm releases (see helm-values/ and the Makefile mlflow/monitoring targets),
+# not templated here. Workloads reach them via in-cluster DNS:
+#   mlflow.worldbank.svc.cluster.local:5000
+#   pushgateway.monitoring.svc.cluster.local:9091
+pushgatewayUrl: pushgateway.monitoring.svc.cluster.local:9091
+
+# Spark ETL job. Requires the Spark Operator.
+spark:
+  enabled: true
+  # schedule.enabled=true -> ScheduledSparkApplication (cron, live polling).
+  # schedule.enabled=false -> one-off SparkApplication per helm revision.
+  schedule:
+    enabled: true
+    cron: "0 * * * *"            # hourly; matches the Airflow DAG cadence
+    concurrencyPolicy: Forbid
+  driver:
+    cores: 1
+    memory: 512m
+  executor:
+    instances: 1
+    cores: 1
+    memory: 512m
+
+# Katib hyperparameter search over Ridge alpha. Requires Katib.
+katib:
+  enabled: true
+  maxTrials: 12
+  parallelTrials: 2
+  alpha:
+    min: "0.01"
+    max: "100.0"
+
+# KServe InferenceService serving the registered sklearn model from S3.
+kserve:
+  enabled: true
+  serviceAccount: kserve-s3-sa
+  minReplicas: 1
+  maxReplicas: 2

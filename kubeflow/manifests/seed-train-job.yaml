@@ -1,0 +1,42 @@
+# One-off training Job used by `make seed` to bootstrap a model.
+# Reads the processed parquet the Spark ETL wrote to S3, trains, logs to MLflow,
+# and uploads model.joblib to s3://etl-dvc-bucket/models/staging/worldbank_population
+# so the KServe InferenceService can become Ready.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: worldbank-seed-train
+  namespace: worldbank
+spec:
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: train
+          image: worldbank-ml:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - python
+            - -m
+            - steps.train
+            - --bucket=etl-dvc-bucket
+            - --processed-prefix=worldbank/processed
+            - --model-prefix=models/staging/worldbank_population
+            - --mlflow-uri=http://mlflow.worldbank.svc.cluster.local:5000
+          env:
+            - name: AWS_REGION
+              value: us-east-1
+            - name: PUSHGATEWAY_URL
+              value: pushgateway.monitoring.svc.cluster.local:9091
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_SECRET_ACCESS_KEY

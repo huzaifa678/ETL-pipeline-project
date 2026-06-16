@@ -1,4 +1,5 @@
 import os
+import logging
 import joblib
 import pandas as pd
 
@@ -39,11 +40,15 @@ class Predictor:
         """
         X_new = self.prepare_input(country, year, all_countries)
         prediction = self.model.predict(X_new)[0]
-        print(f"Predicted value for {country.upper()} ({self.country_map[country.lower()]}) in {year}: {prediction:,.0f}")
+        logging.info("Predicted value for %s (%s) in %d: %s",
+                     country.upper(), self.country_map[country.lower()], year,
+                     f"{prediction:,.0f}")
         return prediction
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
     model_path = os.path.join(os.getcwd(), "model", "model.pkl")
 
     countries = ["Brazil", "China", "United States", "Germany"]

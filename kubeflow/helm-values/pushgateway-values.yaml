@@ -1,0 +1,13 @@
+# Values for the Prometheus Pushgateway chart — the in-cluster equivalent of the
+# docker-compose pushgateway. Batch workloads (training/Katib trials) push their
+# metrics here; the bundled ServiceMonitor lets kube-prometheus-stack scrape it.
+#   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+#   helm upgrade --install pushgateway prometheus-community/prometheus-pushgateway \
+#     -n monitoring -f pushgateway-values.yaml
+#
+# fullnameOverride -> Service "pushgateway", reachable in-cluster at
+#   pushgateway.monitoring.svc.cluster.local:9091
+fullnameOverride: pushgateway
+
+serviceMonitor:
+  enabled: true

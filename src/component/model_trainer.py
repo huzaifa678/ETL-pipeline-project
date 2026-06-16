@@ -79,7 +79,7 @@ class ModelTrainer:
             MODEL_R2.set(r2)
 
             logging.info(f"Model Evaluation -> RMSE: {rmse}, R2: {r2}")
-            print(f"RMSE: {rmse:.2f}, R²: {r2:.2f}")
+            logging.info("RMSE: %.2f, R²: %.2f", rmse, r2)
             return {"rmse": rmse, "r2": r2}
         except Exception as e:
             raise CustomException(e)
@@ -117,7 +117,8 @@ class ModelTrainer:
                 ]
                 best_rmse = min(last_rmses)
                 if metrics["rmse"] >= best_rmse:
-                    print(f"RMSE ({metrics['rmse']:.4f}) did not improve ({best_rmse:.4f}). Skipping registration.")
+                    logging.info("RMSE (%.4f) did not improve (%.4f). Skipping registration.",
+                                 metrics["rmse"], best_rmse)
                     return model, metrics
 
             mv = mlflow.register_model(model_uri=model_uri, name=model_name)
@@ -127,7 +128,7 @@ class ModelTrainer:
                 stage="Staging",
                 archive_existing_versions=True
             )
-            print(f"Registered version {mv.version} of '{model_name}' in Staging.")
+            logging.info("Registered version %s of '%s' in Staging.", mv.version, model_name)
 
         return model, metrics
 
@@ -140,7 +141,7 @@ class ModelTrainer:
             filepath = os.path.join(self.model_dir, filename)
             joblib.dump(model, filepath)
             logging.info(f"Model saved at {filepath}")
-            print(f"✅ Model saved locally at {filepath}")
+            logging.info("Model saved locally at %s", filepath)
 
             if metrics is None:
                 metrics = {"rmse": None, "r2": None}
@@ -157,6 +158,8 @@ class ModelTrainer:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
     input_path = os.path.join(os.getcwd(), "data", "processed", "transformed_data.csv")
     trainer = ModelTrainer(input_file=input_path)
 

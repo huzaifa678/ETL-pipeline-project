@@ -1,0 +1,30 @@
+{{- if .Values.kserve.enabled }}
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: worldbank-population
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+  annotations:
+    # RawDeployment mode (set cluster-wide in the KServe Helm values) — plain
+    # Deployment + Service, no Knative.
+    serving.kserve.io/deploymentMode: RawDeployment
+spec:
+  predictor:
+    minReplicas: {{ .Values.kserve.minReplicas }}
+    maxReplicas: {{ .Values.kserve.maxReplicas }}
+    # SA carries the S3 secret annotations so the storage-initializer can pull
+    # the model from S3.
+    serviceAccountName: {{ .Values.kserve.serviceAccount }}
+    sklearn:
+      protocolVersion: v1
+      storageUri: "{{ include "worldbank.modelUri" . }}"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+{{- end }}

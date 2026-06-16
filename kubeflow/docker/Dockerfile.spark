@@ -1,0 +1,21 @@
+# Spark image for the SparkApplication submitted to the Spark Operator.
+# Bundles the hadoop-aws + aws-sdk jars so s3a:// works, plus requests for the
+# driver-side World Bank API fetch.
+FROM apache/spark:3.5.1-python3
+
+USER root
+
+# hadoop-aws must match the bundled Hadoop version (3.3.4 in Spark 3.5.1).
+ARG HADOOP_AWS_VERSION=3.3.4
+ARG AWS_SDK_VERSION=1.12.367
+RUN curl -fsSL -o /opt/spark/jars/hadoop-aws-${HADOOP_AWS_VERSION}.jar \
+      https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_AWS_VERSION}/hadoop-aws-${HADOOP_AWS_VERSION}.jar \
+ && curl -fsSL -o /opt/spark/jars/aws-java-sdk-bundle-${AWS_SDK_VERSION}.jar \
+      https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/${AWS_SDK_VERSION}/aws-java-sdk-bundle-${AWS_SDK_VERSION}.jar
+
+# requests for the API fetch; boto3 for the S3 incremental-state object.
+RUN pip install --no-cache-dir requests boto3
+
+COPY kubeflow/spark/etl_job.py /opt/spark/work-dir/etl_job.py
+
+USER 185

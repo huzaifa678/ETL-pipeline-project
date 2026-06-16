@@ -1,6 +1,7 @@
 import boto3
 import json
 import joblib
+import logging
 import os
 from datetime import datetime
 from airflow.models import Variable
@@ -47,4 +48,4 @@ def upload_model_to_s3(
             Body=json.dumps(metadata)
         )
 
-    print(f"Uploaded {stage} model to s3://{bucket}/{base_key}/")
+    logging.info("Uploaded %s model to s3://%s/%s/", stage, bucket, base_key)
