@@ -71,3 +71,13 @@ kserve:
   serviceAccount: kserve-s3-sa
   minReplicas: 1
   maxReplicas: 2
+
+# Prometheus scraping of the KServe predictor /metrics endpoint. Requires the
+# Prometheus Operator CRDs (installed by kube-prometheus-stack via the Makefile
+# monitoring target). serviceMonitorLabels must match the operator's
+# serviceMonitorSelector (kube-prometheus-stack uses release=<name>).
+monitoring:
+  enabled: true
+  interval: 15s
+  serviceMonitorLabels:
+    release: monitoring

@@ -42,11 +42,15 @@ forward:
 	@echo "Prometheus http://localhost:9090"
 	@echo "Pushgateway http://localhost:9091"
 	@echo "MLflow     http://localhost:5000"
+	@echo "KServe     http://localhost:8082  (POST /v1/models/worldbank-population:predict)"
+	@echo "Katib      http://localhost:8081/katib/?ns=worldbank"
 	@trap 'kill 0' EXIT; \
 	kubectl -n monitoring port-forward svc/monitoring-grafana 3000:80 & \
 	kubectl -n monitoring port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 & \
 	kubectl -n monitoring port-forward svc/pushgateway 9091:9091 & \
 	kubectl -n worldbank port-forward svc/mlflow 5000:5000 & \
+	kubectl -n worldbank port-forward svc/worldbank-population-predictor 8082:80 & \
+	kubectl -n kubeflow port-forward svc/katib-ui 8081:80 & \
 	wait
 
 ifeq ($(RUNTIME),kind)

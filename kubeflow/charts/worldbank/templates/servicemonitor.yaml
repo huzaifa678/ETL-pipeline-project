@@ -1,0 +1,39 @@
+{{- if and .Values.kserve.enabled .Values.monitoring.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: worldbank-population-metrics
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+    app: kserve-metrics-worldbank
+spec:
+  selector:
+    serving.kserve.io/inferenceservice: worldbank-population
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kserve-worldbank-population
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "worldbank.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.serviceMonitorLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: kserve-metrics-worldbank
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.namespace }}
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: {{ .Values.monitoring.interval }}
+{{- end }}
